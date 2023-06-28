@@ -57,15 +57,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   ProviderScope(
-                    child: MenuInfoPage(),
+                    child: MenuInfoPage(groupId: null),
                   ),
                   CartPage(),
-                  ProviderScope(
-                    child: MenuInfoPage(),
-                  ),
-                  ProviderScope(
-                    child: MenuInfoPage(),
-                  ),
+                  CartPage(),
+                  CartPage(),
                 ],
               ),
             ),
