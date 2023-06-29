@@ -1,3 +1,4 @@
+import 'package:customer_shopping_menu/pages/menu_info.dart';
 import 'package:customer_shopping_menu/pages/product_detail_page.dart';
 import 'package:customer_shopping_menu/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,10 @@ import '../models/cart_model.dart';
 
 class CartPage extends StatelessWidget {
   static const routeName = '/cart';
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -147,74 +152,162 @@ class CartPage extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          final List<OrderProductDetail> orderProductDetails =
-                              [];
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Container(
+                                  height: 340.0,
+                                  width: 300.0,
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      const Text('Confirm Cart',
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold)),
+                                      const SizedBox(height: 16.0),
+                                      TextField(
+                                        controller: nameController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Name',
+                                        ),
+                                      ),
+                                      TextField(
+                                        controller: phoneController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Phone',
+                                        ),
+                                      ),
+                                      TextFormField(
+                                        controller: noteController,
+                                        maxLines:
+                                            4, // Allow multiple lines of input
+                                        decoration: const InputDecoration(
+                                          labelText: 'Note',
+                                        ),
+                                      ),
+                                      const SizedBox(height: 16.0),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            child: const Text('Cancel'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          const SizedBox(width: 8.0),
+                                          TextButton(
+                                            child: const Text('Confirm'),
+                                            onPressed: () async {
+                                              final List<OrderProductDetail>
+                                                  orderProductDetails = [];
 
-                          for (final cartItem in cartProvider.cartItems) {
-                            final product = cartItem.product;
-                            final orderProductDetail = OrderProductDetail(
-                              productMenuId: product
-                                  .id, // Provide the appropriate ID for the product
-                              productName: product.productName,
-                              quantity: cartItem.quantity,
-                              unitPrice: product.actualPrice.toInt(),
-                            );
-                            orderProductDetails.add(orderProductDetail);
-                          }
+                                              for (final cartItem
+                                                  in cartProvider.cartItems) {
+                                                final product =
+                                                    cartItem.product;
+                                                final orderProductDetail =
+                                                    OrderProductDetail(
+                                                  productMenuId: product
+                                                      .id, // Provide the appropriate ID for the product
+                                                  productName:
+                                                      product.productName,
+                                                  quantity: cartItem.quantity,
+                                                  unitPrice: product.actualPrice
+                                                      .toInt(),
+                                                );
+                                                orderProductDetails
+                                                    .add(orderProductDetail);
+                                              }
 
-                          final Order order = Order(
-                            groupId: '3f2ad790-f0a7-4d28-95a9-a5031c121098',
-                            customerName: 'Quang nổ db',
-                            phoneNumber: '1234567890',
-                            note: 'This is a sample order',
-                            orderProductDetails: orderProductDetails,
+                                              final Order order = Order(
+                                                groupId:
+                                                    MenuInfoPage.currentGroupId,
+                                                customerName:
+                                                    nameController.text,
+                                                phoneNumber:
+                                                    phoneController.text,
+                                                note: noteController.text,
+                                                orderProductDetails:
+                                                    orderProductDetails,
+                                              );
+
+                                              final int statusCode =
+                                                  await ApiService.createOrder(
+                                                      order);
+                                              if (statusCode == 201 ||
+                                                  statusCode == 200) {
+                                                // Order created successfully
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          'Order Created'),
+                                                      content: Text(
+                                                          'Your order has been created successfully.'),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          child:
+                                                              const Text('OK'),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            cartProvider
+                                                                .clearCart();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              } else {
+                                                // Error occurred while creating the order
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title:
+                                                          Text('Order Error'),
+                                                      content: Text(
+                                                          'An error occurred while creating the order.'),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          child: Text('OK'),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                           );
-
-                          final int statusCode =
-                              await ApiService.createOrder(order);
-                          if (statusCode == 201 || statusCode == 200) {
-                            // Order created successfully
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Order Created'),
-                                  content: Text(
-                                      'Your order has been created successfully.'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: const Text('OK'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        cartProvider
-                                            .clearCart(); // Clear the cart after successful order creation
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else {
-                            // Error occurred while creating the order
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Order Error'),
-                                  content: Text(
-                                      'An error occurred while creating the order.'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text('OK'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
                         },
                         child: Text('Confirm Cart'),
                       ),

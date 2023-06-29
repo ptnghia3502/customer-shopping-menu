@@ -14,6 +14,7 @@ class MenuInfoPage extends ConsumerWidget {
   late Group group; // Declare group as an instance variable
   late final FutureProvider<Group> groupInfoProvider;
   late final FutureProvider<List<ProductMenu>> menuItemsProvider;
+  static String currentGroupId = '';
 
   MenuInfoPage({Key? key, required String? groupId}) : super(key: key) {
     groupInfoProvider = FutureProvider<Group>((ref) => _getGroupInfo(groupId));
@@ -61,6 +62,7 @@ class MenuInfoPage extends ConsumerWidget {
           return groupInfoAsyncValue.when(
             data: (groupData) {
               final Group group = groupData;
+              currentGroupId = group.id!;
               return Column(
                 children: [
                   const Align(
