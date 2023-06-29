@@ -8,14 +8,17 @@ import 'pages/home_page.dart';
 import 'pages/menu_info.dart';
 import 'pages/cart_page.dart';
 
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:url_strategy/url_strategy.dart';
 
-void configureApp() {
-  setUrlStrategy(PathUrlStrategy());
-}
+// import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+
+// void configureApp() {
+//   setUrlStrategy(PathUrlStrategy());
+// }
 
 void main() {
-  configureApp();
+  // configureApp();
+  setPathUrlStrategy();
   runApp(MyApp());
 }
 
