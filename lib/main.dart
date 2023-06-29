@@ -10,14 +10,7 @@ import 'pages/cart_page.dart';
 
 import 'package:url_strategy/url_strategy.dart';
 
-// import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-
-// void configureApp() {
-//   setUrlStrategy(PathUrlStrategy());
-// }
-
 void main() {
-  // configureApp();
   setPathUrlStrategy();
   runApp(MyApp());
 }
@@ -41,8 +34,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
               builder: (context) => HomePage(),
             );
-          } else if (settings.name!.startsWith('/menu')) {
-            final groupId = settings.name!.split('&id=')[1];
+          } else if (settings.name!.startsWith('/menu?id=')) {
+            final groupId = settings.name!.split('?id=')[1];
             return MaterialPageRoute(
               builder: (context) => ProviderScope(
                 child: MenuInfoPage(groupId: groupId),
