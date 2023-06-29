@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../services/api_service.dart';
 import '../models/group_model.dart';
+import 'generator_page.dart';
 import 'product_detail_page.dart';
 
 // ignore: must_be_immutable
@@ -293,7 +294,14 @@ class MenuInfoPage extends ConsumerWidget {
                                 ),
                                 child: ElevatedButton.icon(
                                   onPressed: () {
-                                    // Add your logic for the second button here
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            GenerateQrCodePage(
+                                                groupId: group.id!),
+                                      ),
+                                    );
                                   },
                                   icon: const Icon(
                                     Icons.qr_code,
