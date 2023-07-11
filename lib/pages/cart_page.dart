@@ -18,7 +18,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cart'),
+        title: const Text('Giỏ hàng'),
         actions: [
           IconButton(
             icon: const Icon(Icons.clear),
@@ -144,10 +144,10 @@ class CartPage extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Total Items: $totalItems'),
+                          Text('Tổng sản phẩm: $totalItems'),
                           const SizedBox(height: 8.0),
                           Text(
-                              'Total Price: \$${totalPrice.toStringAsFixed(2)}'),
+                              'Tổng giá tiền: ${totalPrice.toStringAsFixed(2)} VND'),
                         ],
                       ),
                       ElevatedButton(
@@ -167,7 +167,7 @@ class CartPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
-                                      const Text('Confirm Cart',
+                                      const Text('Xác nhận đơn',
                                           style: TextStyle(
                                               fontSize: 18.0,
                                               fontWeight: FontWeight.bold)),
@@ -175,13 +175,13 @@ class CartPage extends StatelessWidget {
                                       TextField(
                                         controller: nameController,
                                         decoration: const InputDecoration(
-                                          labelText: 'Name',
+                                          labelText: 'Họ tên',
                                         ),
                                       ),
                                       TextField(
                                         controller: phoneController,
                                         decoration: const InputDecoration(
-                                          labelText: 'Phone',
+                                          labelText: 'Số điện thoại',
                                         ),
                                       ),
                                       TextFormField(
@@ -189,7 +189,7 @@ class CartPage extends StatelessWidget {
                                         maxLines:
                                             4, // Allow multiple lines of input
                                         decoration: const InputDecoration(
-                                          labelText: 'Note',
+                                          labelText: 'Ghi chú',
                                         ),
                                       ),
                                       const SizedBox(height: 16.0),
@@ -198,14 +198,14 @@ class CartPage extends StatelessWidget {
                                             MainAxisAlignment.end,
                                         children: [
                                           TextButton(
-                                            child: const Text('Cancel'),
+                                            child: const Text('Hủy'),
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
                                           ),
                                           const SizedBox(width: 8.0),
                                           TextButton(
-                                            child: const Text('Confirm'),
+                                            child: const Text('Xác nhận'),
                                             onPressed: () async {
                                               final List<OrderProductDetail>
                                                   orderProductDetails = [];
@@ -253,9 +253,9 @@ class CartPage extends StatelessWidget {
                                                       (BuildContext context) {
                                                     return AlertDialog(
                                                       title: const Text(
-                                                          'Order Created'),
-                                                      content: Text(
-                                                          'Your order has been created successfully.'),
+                                                          'Thành công'),
+                                                      content: const Text(
+                                                          'Đơn hàng đã được tạo thành công.'),
                                                       actions: <Widget>[
                                                         TextButton(
                                                           child:
@@ -280,10 +280,9 @@ class CartPage extends StatelessWidget {
                                                   builder:
                                                       (BuildContext context) {
                                                     return AlertDialog(
-                                                      title:
-                                                          Text('Order Error'),
+                                                      title: Text('Error'),
                                                       content: Text(
-                                                          'An error occurred while creating the order.'),
+                                                          'Có lỗi trong lúc tạo đơn hàng.'),
                                                       actions: <Widget>[
                                                         TextButton(
                                                           child: Text('OK'),
@@ -309,7 +308,7 @@ class CartPage extends StatelessWidget {
                             },
                           );
                         },
-                        child: Text('Confirm Cart'),
+                        child: const Text('Xác nhận'),
                       ),
                     ],
                   ),

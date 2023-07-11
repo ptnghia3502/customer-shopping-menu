@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../services/api_service.dart';
 import '../models/group_model.dart';
 import 'generator_page.dart';
+import 'order_page.dart';
 import 'product_detail_page.dart';
 
 // ignore: must_be_immutable
@@ -35,7 +36,7 @@ class MenuInfoPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Sốpy Tour',
+          'Hệ thống mua hàng Online',
         ),
         automaticallyImplyLeading: false, // Remove the back button
         actions: [
@@ -253,13 +254,19 @@ class MenuInfoPage extends ConsumerWidget {
                                 child: ElevatedButton.icon(
                                   onPressed: () {
                                     // Add your logic for the first button here
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => OrderPage(),
+                                      ),
+                                    );
                                   },
                                   icon: const Icon(
                                     Icons.inventory,
                                     color: Colors.blue,
                                   ),
                                   label: const Text(
-                                    'View Order',
+                                    'Kiểm tra đơn',
                                     style: TextStyle(
                                       color: Colors.blue,
                                     ),

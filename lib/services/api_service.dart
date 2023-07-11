@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/group_model.dart';
+import '../models/order_detail_model.dart';
 import '../models/order_model.dart';
 import '../models/product_menu_model.dart';
 
@@ -51,5 +52,43 @@ class ApiService {
     );
 
     return response.statusCode;
+  }
+
+  // Get Order detail by order id
+  static Future<OrderModel> getOrderByOrderId(String orderId) async {
+    final url = Uri.parse('${baseUrl}orders/$orderId');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final orderJson = json.decode(response.body);
+      return OrderModel.fromJson(orderJson);
+    } else {
+      throw Exception('Failed to fetch order details');
+    }
+  }
+
+  // Get Orders by Phone Number
+  static Future<List<OrderModel>> getOrdersByPhone(String phoneNumber) async {
+    final url = Uri.parse('${baseUrl}customers/$phoneNumber/orders');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic responseBody = json.decode(response.body);
+
+      if (responseBody is Map) {
+        final orderJson = responseBody
+            as Map<String, dynamic>; // Cast to Map<String, dynamic>
+        final order = OrderModel.fromJson(orderJson);
+        return [order]; // Return a list with the single order
+      } else if (responseBody is List) {
+        final ordersJson =
+            responseBody as List<dynamic>; // Cast to List<dynamic>
+        return ordersJson.map((json) => OrderModel.fromJson(json)).toList();
+      } else {
+        throw Exception('Invalid response format');
+      }
+    } else {
+      throw Exception('Failed to fetch orders');
+    }
   }
 }

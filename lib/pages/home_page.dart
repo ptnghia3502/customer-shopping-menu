@@ -4,6 +4,8 @@ import 'package:customer_shopping_menu/pages/menu_info.dart';
 import 'package:customer_shopping_menu/utils/footer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'order_page.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -59,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                   ProviderScope(
                     child: MenuInfoPage(groupId: null),
                   ),
-                  CartPage(),
+                  OrderPage(),
                   CartPage(),
                   CartPage(),
                 ],
