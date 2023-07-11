@@ -182,7 +182,7 @@ class CartPage extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   child: Container(
-                                    height: 400.0,
+                                    height: 380.0,
                                     width: 300.0,
                                     padding: const EdgeInsets.all(16.0),
                                     child: Column(
