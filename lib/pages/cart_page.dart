@@ -152,161 +152,185 @@ class CartPage extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Container(
-                                  height: 340.0,
-                                  width: 300.0,
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      const Text('Xác nhận đơn',
-                                          style: TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.bold)),
-                                      const SizedBox(height: 16.0),
-                                      TextField(
-                                        controller: nameController,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Họ tên',
-                                        ),
-                                      ),
-                                      TextField(
-                                        controller: phoneController,
-                                        decoration: const InputDecoration(
-                                          labelText: 'Số điện thoại',
-                                        ),
-                                      ),
-                                      TextFormField(
-                                        controller: noteController,
-                                        maxLines:
-                                            4, // Allow multiple lines of input
-                                        decoration: const InputDecoration(
-                                          labelText: 'Ghi chú',
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16.0),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          TextButton(
-                                            child: const Text('Hủy'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          const SizedBox(width: 8.0),
-                                          TextButton(
-                                            child: const Text('Xác nhận'),
-                                            onPressed: () async {
-                                              final List<OrderProductDetail>
-                                                  orderProductDetails = [];
-
-                                              for (final cartItem
-                                                  in cartProvider.cartItems) {
-                                                final product =
-                                                    cartItem.product;
-                                                final orderProductDetail =
-                                                    OrderProductDetail(
-                                                  productMenuId: product
-                                                      .id, // Provide the appropriate ID for the product
-                                                  productName:
-                                                      product.productName,
-                                                  quantity: cartItem.quantity,
-                                                  unitPrice: product.actualPrice
-                                                      .toInt(),
-                                                );
-                                                orderProductDetails
-                                                    .add(orderProductDetail);
-                                              }
-
-                                              final Order order = Order(
-                                                groupId:
-                                                    MenuInfoPage.currentGroupId,
-                                                customerName:
-                                                    nameController.text,
-                                                phoneNumber:
-                                                    phoneController.text,
-                                                note: noteController.text,
-                                                orderProductDetails:
-                                                    orderProductDetails,
-                                              );
-
-                                              final int statusCode =
-                                                  await ApiService.createOrder(
-                                                      order);
-                                              if (statusCode == 201 ||
-                                                  statusCode == 200) {
-                                                // Order created successfully
-                                                Navigator.of(context).pop();
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      title: const Text(
-                                                          'Thành công'),
-                                                      content: const Text(
-                                                          'Đơn hàng đã được tạo thành công.'),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          child:
-                                                              const Text('OK'),
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                            cartProvider
-                                                                .clearCart();
-                                                          },
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              } else {
-                                                // Error occurred while creating the order
-                                                Navigator.of(context).pop();
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      title: Text('Error'),
-                                                      content: Text(
-                                                          'Có lỗi trong lúc tạo đơn hàng.'),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          child: Text('OK'),
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                          final cartProvider =
+                              Provider.of<CartProvider>(context, listen: false);
+                          if (cartProvider.cartItems.isEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Error'),
+                                  content: const Text(
+                                      'Giỏ hàng trống. Không thể tạo đơn hàng.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                ),
-                              );
-                            },
-                          );
+                                  child: Container(
+                                    height: 400.0,
+                                    width: 300.0,
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        const Text('Xác nhận đơn',
+                                            style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold)),
+                                        const SizedBox(height: 16.0),
+                                        TextField(
+                                          controller: nameController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Họ tên',
+                                          ),
+                                        ),
+                                        TextField(
+                                          controller: phoneController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Số điện thoại',
+                                          ),
+                                        ),
+                                        TextFormField(
+                                          controller: noteController,
+                                          maxLines:
+                                              4, // Allow multiple lines of input
+                                          decoration: const InputDecoration(
+                                            labelText: 'Ghi chú',
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16.0),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            TextButton(
+                                              child: const Text('Hủy'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            const SizedBox(width: 8.0),
+                                            TextButton(
+                                              child: const Text('Xác nhận'),
+                                              onPressed: () async {
+                                                final List<OrderProductDetail>
+                                                    orderProductDetails = [];
+
+                                                for (final cartItem
+                                                    in cartProvider.cartItems) {
+                                                  final product =
+                                                      cartItem.product;
+                                                  final orderProductDetail =
+                                                      OrderProductDetail(
+                                                    productMenuId: product
+                                                        .id, // Provide the appropriate ID for the product
+                                                    productName:
+                                                        product.productName,
+                                                    quantity: cartItem.quantity,
+                                                    unitPrice: product
+                                                        .actualPrice
+                                                        .toInt(),
+                                                  );
+                                                  orderProductDetails
+                                                      .add(orderProductDetail);
+                                                }
+
+                                                final Order order = Order(
+                                                  groupId: MenuInfoPage
+                                                      .currentGroupId,
+                                                  customerName:
+                                                      nameController.text,
+                                                  phoneNumber:
+                                                      phoneController.text,
+                                                  note: noteController.text,
+                                                  orderProductDetails:
+                                                      orderProductDetails,
+                                                );
+
+                                                final int statusCode =
+                                                    await ApiService
+                                                        .createOrder(order);
+                                                if (statusCode == 201 ||
+                                                    statusCode == 200) {
+                                                  // Order created successfully
+                                                  Navigator.of(context).pop();
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                            'Thành công'),
+                                                        content: const Text(
+                                                            'Đơn hàng đã được tạo thành công.'),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            child: const Text(
+                                                                'OK'),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              cartProvider
+                                                                  .clearCart();
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  // Error occurred while creating the order
+                                                  Navigator.of(context).pop();
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text('Error'),
+                                                        content: Text(
+                                                            'Có lỗi trong lúc tạo đơn hàng.'),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            child: Text('OK'),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
                         },
                         child: const Text('Xác nhận'),
                       ),
