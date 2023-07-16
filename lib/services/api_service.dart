@@ -7,8 +7,9 @@ import '../models/order_model.dart';
 import '../models/product_menu_model.dart';
 
 class ApiService {
-  static const String baseUrl =
-      'https://vouch-tour-apis.azurewebsites.net/api/';
+  // static const String baseUrl =
+  //     'https://vouch-tour-apis.azurewebsites.net/api/';
+  static const String baseUrl = 'https://vouch-tour.azurewebsites.net/api/';
 
   // ========================= MENU API ==============================
   //get all item in menu
