@@ -17,7 +17,7 @@ class ProductDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Detail'),
+        title: const Text('Thông tin chi tiết sản phẩm'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -40,7 +40,7 @@ class ProductDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Product Name: ${product.productName}',
+                    product.productName,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -116,7 +116,7 @@ class ProductDetailPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Giá niêm yết: ',
+                        'Giá sản phẩm: ',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -137,7 +137,7 @@ class ProductDetailPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Giá phân phối:',
+                        'Đã được giảm giá:',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -165,7 +165,12 @@ class ProductDetailPage extends StatelessWidget {
                             Provider.of<CartProvider>(context, listen: false);
                         cartProvider.addToCart(product);
                       },
-                      child: const Text('Thêm sản phẩm vào giỏ hàng'),
+                      child: const Text(
+                        'Thêm sản phẩm vào giỏ hàng',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],

@@ -114,7 +114,7 @@ class _OrderPageState extends State<OrderPage> {
               )
             else
               const Center(
-                child: Text('No orders found.'),
+                child: Text('Không tìm thấy đơn hàng nào.'),
               ),
           ],
         ),
