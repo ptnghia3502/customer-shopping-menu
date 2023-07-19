@@ -13,7 +13,7 @@ import 'product_detail_page.dart';
 
 // ignore: must_be_immutable
 class MenuInfoPage extends ConsumerWidget {
-  late Group group; // Declare group as an instance variable
+  late Group group;
   late final FutureProvider<Group> groupInfoProvider;
   late final FutureProvider<List<ProductMenu>> menuItemsProvider;
   static String currentGroupId = '';
@@ -84,7 +84,7 @@ class MenuInfoPage extends ConsumerWidget {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(16),
                       child: FutureBuilder<List<ProductMenu>>(
                         future: ref.watch(menuItemsProvider.future),
                         builder: (context, snapshot) {

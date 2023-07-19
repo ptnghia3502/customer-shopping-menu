@@ -48,7 +48,6 @@ class ProductDetailPage extends StatelessWidget {
                     ).copyWith(color: const Color(0xFF843667)),
                   ),
                   const Gap(12),
-
                   // RatingBar and review code
                   Row(
                     children: [
@@ -78,7 +77,6 @@ class ProductDetailPage extends StatelessWidget {
                       const Text('4953 review')
                     ],
                   ),
-
                   const Gap(16),
                   const Text(
                     'Mô tả sản phẩm:',
@@ -87,7 +85,6 @@ class ProductDetailPage extends StatelessWidget {
                   const Gap(4),
                   Text(product.description),
                   const Gap(40),
-
                   Row(
                     children: [
                       const Text(
@@ -98,7 +95,6 @@ class ProductDetailPage extends StatelessWidget {
                       Text(product.supplierName),
                     ],
                   ),
-
                   const Gap(8),
                   Row(
                     children: [
@@ -111,7 +107,6 @@ class ProductDetailPage extends StatelessWidget {
                     ],
                   ),
                   const Gap(20),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -152,7 +147,6 @@ class ProductDetailPage extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   Container(
                     padding: const EdgeInsets.only(top: 20),
                     child: ElevatedButton(
@@ -164,6 +158,7 @@ class ProductDetailPage extends StatelessWidget {
                         final cartProvider =
                             Provider.of<CartProvider>(context, listen: false);
                         cartProvider.addToCart(product);
+                        showCartSnackbar(context);
                       },
                       child: const Text(
                         'Thêm sản phẩm vào giỏ hàng',
@@ -180,5 +175,13 @@ class ProductDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showCartSnackbar(BuildContext context) {
+    final snackBar = const SnackBar(
+      content: Text('Thêm vào giỏ hàng thành công'),
+      duration: Duration(seconds: 2), // Adjust the duration as you like
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
